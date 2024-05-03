@@ -1,0 +1,25 @@
+#!/bin/bash
+make
+rm -rf resultats/*
+./app.exe -hiden 80 -epoch 15 -batch 32 -lr 0.01 -thread 2 
+
+
+#echo -e "\nNombre d'execution : "
+#read exe
+#for ((i=1; i<=$exe; i++))  
+#do  
+	#echo -e "\n--------------------Exécution $i--------------------\n"  
+	
+#done 
+
+
+int *TrainIdx = malloc((n)*sizeof(int));
+  for (int i = mes_param->start; i < mes_param->end ; i++)
+  {
+    TrainIdx[j] = i ; 
+    j = j + 1;
+  }
+  // shuffle(TrainIdx,(n-1));
+  j = 0;
+   
+   k = TrainIdx[j];
