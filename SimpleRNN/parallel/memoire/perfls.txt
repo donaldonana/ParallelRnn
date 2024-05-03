@@ -1,0 +1,13 @@
+# started on Fri Apr 19 16:45:43 2024
+
+
+ Performance counter stats for 'ls':
+
+            30 362      cache-misses                                                          
+
+       0,005325665 seconds time elapsed
+
+       0,004532000 seconds user
+       0,000000000 seconds sys
+
+
