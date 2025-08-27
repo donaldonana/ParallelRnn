@@ -1,0 +1,29 @@
+// Print sequences
+    printf("Sequences:\n");
+    for (int s = 0; s < data->xraw; s++) {
+        printf("\n");
+        for (int t = 0; t < data->xcol; t++) {
+            printf("%d", data->X[s][t]);
+        }
+
+         printf("-> Label: [%f, %f]\n", data->Y[s][0], data->Y[s][1]);
+    }
+
+    
+
+    printf("\nEmbedding:\n");
+    for (int i = 0; i < 2; i++) {
+        printf("[%f]\n", data->embedding[i][0]);
+    }
+
+
+
+
+  // receiver = e_calloc(1, sizeof(lstm_rnn));
+
+  // receiver->X = lstm->X;  
+  // receiver->N = lstm->N;  
+  // receiver->S = lstm->S;  
+  // receiver->Y = lstm->Y;  
+
+  // receiver->probs = get_zero_vector(lstm->Y);
