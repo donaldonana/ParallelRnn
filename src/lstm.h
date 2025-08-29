@@ -34,12 +34,19 @@ typedef struct lstm_cache {
 
 typedef struct lstm_rnn
 { 
-  unsigned int X; /**< Number of input nodes */
-  unsigned int N; /**< Number of neurons */
-  unsigned int Y; /**< Number of output nodes */
-  unsigned int S; /**< lstm_model_t.X + lstm_model_t.N */
 
-  // The model 
+  /** 
+   * X
+   * N
+   * Y
+   * S
+    **/
+  unsigned int X; 
+  unsigned int N;  
+  unsigned int Y;  
+  unsigned int S;  
+
+  // parameters 
   double* Wf;
   double* Wi;
   double* Wc;
@@ -54,7 +61,7 @@ typedef struct lstm_rnn
   // output probability vector 
   double* probs; 
 
-  // cache for gradient
+  // gradients gate
   double* dldh;
   double* dldho;
   double* dldhf;
@@ -67,6 +74,30 @@ typedef struct lstm_rnn
   double* dldXc;
   double* dldy;
 
+  // gradients parameters
+  double* dWf;
+  double* dWi;
+  double* dWc;
+  double* dWo;
+  double* dWy;
+  double* dbf;
+  double* dbi;
+  double* dbc;
+  double* dbo;
+  double* dby;
+
+  // cucc. gradients parameters
+  double* cdWf;
+  double* cdWi;
+  double* cdWc;
+  double* cdWo;
+  double* cdWy;
+  double* cdbf;
+  double* cdbi;
+  double* cdbc;
+  double* cdbo;
+  double* cdby;
+
   // gate and memory cell cache for time step
   lstm_cache** cache;
   double* c_prev;
@@ -76,40 +107,32 @@ typedef struct lstm_rnn
 } lstm_rnn;
 
 
-int lstm_init(int X, int N, int Y, lstm_rnn* lstm, int zeros);
+int lstm_init(int X, int N, int Y, lstm_rnn* lstm);
 
 void lstm_free_model(lstm_rnn *lstm);
 
 void lstm_forward(lstm_rnn* model, int *x ,lstm_cache** cache, Data *data);
 
-void lstm_cache_container_free(lstm_cache* cache_to_be_freed);
+void lstm_backforward(lstm_rnn* model , double *y, int l, lstm_cache** cache_in);
 
-void lstm_backforward(lstm_rnn* model , double *y, int l, lstm_cache** cache_in, lstm_rnn* gradients);
+void lstm_cache_container_free(lstm_cache* cache_to_be_freed);
 
 void lstm_free_model(lstm_rnn* lstm);
 
 void lstm_zero_the_model(lstm_rnn *model);
 
-void gradients_decend(lstm_rnn* model, lstm_rnn* gradients, float lr, int n);
+void gradients_decend(lstm_rnn* model, lstm_rnn* gradients,float lr, int n);
 
-void lstm_training(lstm_rnn* lstm, lstm_rnn* gradient, lstm_rnn* AVGgradient,  int mini_batch_size, float lr, Data* data);
-
-void alloc_cache_array(lstm_rnn* lstm, int X, int N, int Y, int l);
-
-void sum_gradients(lstm_rnn* gradients, lstm_rnn* gradients_entry);
+void sum_gradients(lstm_rnn* model);
 
 void mean_gradients(lstm_rnn* gradients, double d);
-
-void print_summary(lstm_rnn* lstm, int epoch, int mini_batch, float lr, int THREADS, int withMutex);
-
+ 
 void copy_lstm(lstm_rnn* lstm, lstm_rnn* secondlstm);
 
-void lstm_store_net_layers_as_json(lstm_rnn* lstm, const char *filename);
+void lstm_store(lstm_rnn* lstm, const char *filename);
 
-float lstm_validation(lstm_rnn* lstm, Data* data);
-
-float lstm_test(lstm_rnn* lstm, Data* data, int execution, int thread, FILE* ft);
-
+void lstm_reset_gradient(lstm_rnn * model, int rc);
+ 
 lstm_cache*  lstm_cache_init(int X, int N, int Y);
 
 

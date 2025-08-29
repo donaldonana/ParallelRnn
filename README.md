@@ -1,3 +1,4 @@
+## About Project ? 
 
 The objective of the is to compare and analyze several parallel implementation strategies for training an LSTM Recurrent Neural Network in C. 
 
